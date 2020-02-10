@@ -36,11 +36,12 @@ public class FlinkSource extends RichParallelSourceFunction<SensorReading> {
 		int taskIndex = this.getRuntimeContext().getIndexOfThisSubtask();
 		String sensorID = "sensor_" + taskIndex;
 		double temperature;
-
-		while (running) {
+		long count = 0;
+		while (true) {
 			long curTime = Calendar.getInstance().getTimeInMillis();
 			temperature = rand.nextGaussian() * 0.5;
-			srcCtx.collect(new SensorReading(sensorID, curTime, temperature));
+			srcCtx.collect(new SensorReading(sensorID, curTime, temperature,count));
+			count++;
 		}
 
 	}

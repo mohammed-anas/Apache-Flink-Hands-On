@@ -22,26 +22,26 @@ public class ProcessSensorReadings {
 	public static void main(String[] args) {
 
 		StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-		DataStream<Long> stream = env.addSource(new FlinkSource())
-									.map(new MapFunction<SensorReading, Long>() {
 
-										/**
-										 * 
-										 */
-										private static final long serialVersionUID = 1L;
+		DataStream<SensorReading> stream = env.addSource(new FlinkSource()).map(new MapFunction<SensorReading, SensorReading>() {
 
-										@Override
-										public Long map(SensorReading reading) throws Exception {
-											
-											return reading.timestamp;
-										}
-									}).setParallelism(1);
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public SensorReading map(SensorReading reading) throws Exception {
+
+				return reading;
+			}
+		}).setParallelism(1);
 		stream.print();
 		try {
 			env.execute();
 		} catch (Exception e) {
 		}
-		
+
 	}
 
 }
